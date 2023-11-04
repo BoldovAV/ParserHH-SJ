@@ -1,3 +1,4 @@
+import json
 import os
 from abc import ABC, abstractmethod
 
@@ -14,8 +15,8 @@ class AbstractAPI(ABC):
 class SuperJob(AbstractAPI):
     api_key: str = os.getenv('SUPER_JOB_KEY').lstrip().rstrip()
 
-    def __init__(self, keywords=None, payment_from=None,
-                 payment_to=None):  # , page=1
+    def __init__(self, keywords, payment_from,
+                 payment_to):  # , page=1
         self.url = 'https://api.superjob.ru/2.0/vacancies'
         self.headers = {'X-Api-App-Id': self.api_key}
         self.params = {
@@ -27,20 +28,26 @@ class SuperJob(AbstractAPI):
 
     def get_vacancies(self):
         return requests.get(self.url, headers=self.headers,
-                            params=self.params)
+                            params=self.params).json()
 
 
 class HeadHunt(AbstractAPI):
 
-    def __init__(self, keyword=None, salary_from=None,
-                 salary_to=None):  # , page=0
-        self.url = "https://api.hh.ru/"
+    def __init__(self, keyword, payment_from,
+                 payment_to):  # , page=0
+        self.url = "https://api.hh.ru/vacancies/"
         self.params = {
             # 'page': page,
             'text': keyword,
-            'salary_from': salary_from,
-            'salary_to': salary_to
+            'salary_from': payment_from,
+            'salary_to': payment_to
         }
+
+
+    def print_info(self) -> None:
+        """Выводит в консоль информацию о канале."""
+        print(json.dumps(self.get_vacancies()))
+
 
     def get_vacancies(self):
         return requests.get(self.url, params=self.params)
