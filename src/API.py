@@ -20,6 +20,7 @@ class SuperJob(AbstractAPI):
 
 
 class HeadHunt(AbstractAPI):
+    base_url = "https://api.hh.ru/"
 
     def get_vacancies(self):
         pass
