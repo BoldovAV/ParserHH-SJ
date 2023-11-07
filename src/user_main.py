@@ -9,5 +9,4 @@ while not chose:
     chose = chose_site.site_search
 
 
-
 print("[eq")
