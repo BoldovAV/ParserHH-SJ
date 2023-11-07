@@ -7,6 +7,10 @@ from src.API import HeadHunt, SuperJob
 class BasicRequest(ABC):
 
     @abstractmethod
+    def get_vacancies_from_json(self):
+        pass
+
+    @abstractmethod
     def key_words(self):
         pass
 
@@ -15,19 +19,11 @@ class BasicRequest(ABC):
         pass
 
 
-class JsonFile(ABC):
-
-    @abstractmethod
-    def to_json(self, path):
-        pass
-
-
-class HeadHuntSearch(BasicRequest, JsonFile, HeadHunt):
+class HeadHuntSearch(BasicRequest):
     """Класс для обработки ответов по запросу с сайта HH.ru"""
 
-    def __init__(self, keyword=None, salary_from=None,
-                 salary_to=None):
-        super().__init__(keyword, salary_from, salary_to)
+    def get_vacancies_from_json(self):
+        pass
 
     def key_words(self):
         pass
@@ -35,28 +31,18 @@ class HeadHuntSearch(BasicRequest, JsonFile, HeadHunt):
     def payment(self):
         pass
 
-    def to_json(self, path):
-        with open(path, "w") as file:  # , encoding='windows-1251'
-            file.writelines(json.dumps(json.loads(self.get_vacancies()),
-                                       indent=4))
 
-
-class SuperJobSearch(BasicRequest, JsonFile, SuperJob):
+class SuperJobSearch(BasicRequest):
     """Класс для обработки ответов по запросу с сайта SuperJob.ru"""
 
-    def __init__(self, keyword=None, payment_from=None,
-                 payment_to=None):
-        super().__init__(keyword, payment_from, payment_to)
+    def get_vacancies_from_json(self):
+        pass
 
     def key_words(self):
         pass
 
     def payment(self):
         pass
-
-    def to_json(self, path):
-        with open(path, "w", encoding='utf-8') as file:
-            file.writelines(json.dumps(self.get_vacancies(), indent=4))
 
 
 a = HeadHuntSearch(keyword='Developer', salary_to=1000000, salary_from=10)

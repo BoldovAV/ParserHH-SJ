@@ -28,7 +28,7 @@ class HeadHunt(AbstractAPI):
         }
 
     def get_vacancies(self):
-        return requests.get(self.url, params=self.params)
+        return requests.get(self.url, params=self.params).text
 
 
 class SuperJob(AbstractAPI):
@@ -48,4 +48,4 @@ class SuperJob(AbstractAPI):
 
     def get_vacancies(self):
         return requests.get(self.url, headers=self.headers,
-                            params=self.params).json().text
+                            params=self.params).json()
