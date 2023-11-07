@@ -1,3 +1,8 @@
+from src.node import LinkList
+# from src.user_main import chose
+from src.work_with_json import HHJson, SJJson
+
+
 class Welcome:
 
     @property
@@ -21,8 +26,41 @@ class Welcome:
             else:
                 if num == 1:
                     print("Вы выбрали поиск по HeadHunter.ru")
+                    self.ask_key_pay()
                 elif num == 2:
                     print("Вы выбрали поиск по SuperJob.ru")
                 else:
                     print("Вы выбрали поиск по всем")
                 return num
+
+    def ask_key_pay(self):
+        try:
+            profession = input("Введите название профессии по которой осуществлять поиск\n")
+            pay_form = int(input('Укажите минимальный уровень зарплаты'))
+            pay_to = int(input('Укажите максимальный уровень зарплаты'))
+        except ValueError:
+            print("Не корректный ввод")
+            return False
+        else:
+            pass
+
+
+# prof = LinkList()
+# if chose == 1:
+#     site = HHJson()
+#     site.to_json()
+#     for i in range(len(site.from_json())):
+#         prof.insert_at_end(data)
+# elif chose == 2:
+#     site = SJJson()
+#     site.to_json()
+#     all_vacancy = site.from_json()
+#     for i in range(len(site.from_json())):
+#         prof.insert_at_end(data)
+# else:
+#     site1 = HHJson()
+#     for i in range(len(site1.from_json())):
+#         prof.insert_at_end(data)
+#     site2 = SJJson()
+#     for i in range(len(site2.from_json())):
+#         prof.insert_at_end(data)

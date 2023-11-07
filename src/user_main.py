@@ -8,5 +8,8 @@ while not chose:
     chose_site = Welcome()
     chose = chose_site.site_search
 
+answer = False
+while not answer:
+    answer_work = Welcome()
+    answer = answer_work.ask_key_pay
 
-print("[eq")

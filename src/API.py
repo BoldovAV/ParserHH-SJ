@@ -16,14 +16,14 @@ class AbstractAPI(ABC):
 
 class HeadHunt(AbstractAPI):
 
-    def __init__(self, keyword, payment_from,
-                 payment_to):  # , page=0
+    def __init__(self, keyword, salary_from,
+                 salary_to):  # , page=0
         self.url = "https://api.hh.ru/vacancies/"
         self.params = {
             # 'page': page,
             'text': keyword,
-            'salary_from': payment_from,
-            'salary_to': payment_to,
+            'salary_from': salary_from,
+            'salary_to': salary_to,
             'only_with_salary': True
         }
 
