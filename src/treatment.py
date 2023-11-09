@@ -26,6 +26,24 @@ class BasicRequest(ABC):
         pass
 
 
+# class BaseOpera:
+#
+#     def __init__(self):
+#         self.name = None  # Название должности
+#         self.city = None  # Город
+#         self.work_place = None  # Место работы
+#         self.pay_from = None  # Оплата от
+#         self.pay_to = None  # Оплата до
+#         self.currency = None  # Валюта
+#         self.url = None  # Ссылка
+#         self.employer = None  # Ссылка на работодателя
+#         self.exp = None  # Опыт работы
+#
+#     def __str__(self):
+#         return f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}'
+#         # print(f'{self.name}\nJОплата от {self.pay_from} до {self.pay_to} {self.currency}')
+
+
 class HeadHuntSearch(BasicRequest, HHJson):
     """Класс для обработки ответов по запросу с сайта HH.ru"""
 
@@ -34,15 +52,26 @@ class HeadHuntSearch(BasicRequest, HHJson):
         self.name = self.from_json()[call]['name']  # Название должности
         self.city = self.from_json()[call]['area']['name']  # Город
         self.work_place = self.from_json()[call]['schedule']['name']  # Место работы
-        self.pay_from = self.from_json()[call]['salary']['from']  # Оплата от
-        self.pay_to = self.from_json()[call]['salary']['to']  # Оплата до
+        self.pay_from = self.from_json()[call]['salary']['from']\
+            if self.from_json()[call]['salary']['from'] is not None\
+            else "Не указано"  # Оплата от
+        self.pay_to = self.from_json()[call]['salary']['to']\
+            if self.from_json()[call]['salary']['from'] is not None\
+            else "Не указано"  # Оплата до
         self.currency = self.from_json()[call]['salary']['currency']  # Валюта
         self.url = self.from_json()[call]['alternate_url']  # Ссылка
         self.employer = self.from_json()[call]['employer']['alternate_url']  # Ссылка на работодателя
         self.exp = self.from_json()[call]['experience']['name']  # Опыт работы
 
+    def __str__(self):
+        # print(f'{self.name}\nJОплата от {self.pay_from} до {self.pay_to} {self.currency}')
+        # super().__str__()
+        print(self.pay_to)
+        print(type(self.pay_to))
+        return f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}'
+
     def get_vacancies_from_json(self):
-        pass
+        return self.from_json()
 
     def key_words(self):
         pass
@@ -69,8 +98,13 @@ class SuperJobSearch(BasicRequest, SJJson):
         self.employer = self.from_json()[call]['client']['link']  # Ссылка на работодателя
         self.exp = self.from_json()[call]['experience']['title']  # Опыт работы
 
+    def __str__(self):
+        # print(f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}')
+        # super().__str__()
+        return f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}'
+
     def get_vacancies_from_json(self):
-        pass
+        return self.from_json()
 
     def key_words(self):
         pass
@@ -82,7 +116,10 @@ class SuperJobSearch(BasicRequest, SJJson):
         pass
 
 
-# a = HeadHuntSearch(0)  # keyword='Developer', salary_to=1000000, salary_from=10
+a = HeadHuntSearch(0)  # keyword='Developer', salary_to=1000000, salary_from=10
+
+
+print(a)
 # # c = SuperJobSearch(keyword='Developer', payment_to=1000000, payment_from=10)
 # b = a.get_vacancies()
 # b1 = c.get_vacancies()
