@@ -17,10 +17,10 @@ class AbstractAPI(ABC):
 class HeadHunt(AbstractAPI):
 
     def __init__(self, keyword, salary_from,
-                 salary_to):  # , page=0
+                 salary_to):  # , per_page=20
         self.url = "https://api.hh.ru/vacancies/"
         self.params = {
-            # 'page': page,
+            # 'per_page': per_page,
             'text': keyword,
             'salary_from': salary_from,
             'salary_to': salary_to,
@@ -36,7 +36,7 @@ class SuperJob(AbstractAPI):
     api_key: str = os.getenv('SUPER_JOB_KEY').lstrip().rstrip()
 
     def __init__(self, keywords, payment_from,
-                 payment_to):  # , page=1
+                 payment_to):  # , count=20
         self.url = 'https://api.superjob.ru/2.0/vacancies'
         self.headers = {'X-Api-App-Id': self.api_key}
         self.params = {
@@ -44,7 +44,7 @@ class SuperJob(AbstractAPI):
             'payment_from': payment_from,
             'payment_to': payment_to,
             'no_agreement': 1,
-            # 'page': page,
+            # 'count': count,
         }
 
     def get_vacancies(self):

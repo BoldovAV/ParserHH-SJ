@@ -33,13 +33,12 @@ class HeadHuntSearch(BasicRequest, HHJson):
         super().__init__()
         self.name = self.from_json()[call]['name']  # Название должности
         self.city = self.from_json()[call]['area']['name']  # Город
+        self.work_place = self.from_json()[call]['schedule']['name']  # Место работы
         self.pay_from = self.from_json()[call]['salary']['from']  # Оплата от
         self.pay_to = self.from_json()[call]['salary']['to']  # Оплата до
         self.currency = self.from_json()[call]['salary']['currency']  # Валюта
-        self.url = self.from_json()[call]['apply_alternate_url']  # Ссылка
-        self.employer = self.from_json()[call]['employer']  # Работодатель
-        self.requirement = self.from_json()[call]['snippet']['requirement']  # Требования
-        self.role = self.from_json()[call]['professional_roles'][0]['name']  # Роль на работа
+        self.url = self.from_json()[call]['alternate_url']  # Ссылка
+        self.employer = self.from_json()[call]['employer']['alternate_url']  # Ссылка на работодателя
         self.exp = self.from_json()[call]['experience']['name']  # Опыт работы
 
     def get_vacancies_from_json(self):
@@ -58,6 +57,18 @@ class HeadHuntSearch(BasicRequest, HHJson):
 class SuperJobSearch(BasicRequest, SJJson):
     """Класс для обработки ответов по запросу с сайта SuperJob.ru"""
 
+    def __init__(self, call):
+        super().__init__()
+        self.name = self.from_json()[call]['profession']  # Название должности
+        self.city = self.from_json()[call]['town']['title']  # Город
+        self.work_place = self.from_json()[call]['experience']['place_of_work']  # Место работы
+        self.pay_from = self.from_json()[call]['payment_from']  # Оплата от
+        self.pay_to = self.from_json()[call]['payment_to']  # Оплата до
+        self.currency = self.from_json()[call]['currency']  # Валюта
+        self.url = self.from_json()[call]['link']  # Ссылка
+        self.employer = self.from_json()[call]['client']['link']  # Ссылка на работодателя
+        self.exp = self.from_json()[call]['experience']['title']  # Опыт работы
+
     def get_vacancies_from_json(self):
         pass
 
@@ -71,8 +82,8 @@ class SuperJobSearch(BasicRequest, SJJson):
         pass
 
 
-a = HeadHuntSearch(0)  # keyword='Developer', salary_to=1000000, salary_from=10
-# c = SuperJobSearch(keyword='Developer', payment_to=1000000, payment_from=10)
+# a = HeadHuntSearch(0)  # keyword='Developer', salary_to=1000000, salary_from=10
+# # c = SuperJobSearch(keyword='Developer', payment_to=1000000, payment_from=10)
 # b = a.get_vacancies()
 # b1 = c.get_vacancies()
 # c.to_json("SJ.json")
@@ -84,10 +95,10 @@ a = HeadHuntSearch(0)  # keyword='Developer', salary_to=1000000, salary_from=10
 # print(json.loads(b.text))
 # print(b.text)
 # asd = json.dumps(b.content)
-# print(asd)
-
-print(a.from_json())
-print(a.name)
+# # print(asd)
+#
+# print(a.from_json())
+# print(a.name)
 
 # print(b.headers)
 # print(b.reason)

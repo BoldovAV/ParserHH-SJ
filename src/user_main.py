@@ -10,10 +10,10 @@ from src.work_with_json import HHJson, SJJson
 
 class Welcome:
 
-    def __init__(self, keyword, pay_from=0, pay_to=0):
+    def __init__(self, keyword, pay_from, pay_to):
         self.keyword = keyword
-        self.pay_from = int(pay_from)  # if pay_from is not None else 0
-        self.pay_to = int(pay_to)  # if pay_from is not None else 0
+        self.pay_from = pay_from  # if pay_from is not None else 0
+        self.pay_to = pay_to  # if pay_from is not None else 0
 
     def site_search(self):
         try:
@@ -110,10 +110,11 @@ while True:
               "Попробуйте еще раз\n")
         pay_from = pay.pay_from_()
         pay_to = pay.pay_to_()
-# print(type(pay_from))
-# print(pay_from)
+print(type(pay_from))
+print(type(pay_to))
 chose_site = Welcome(keyword=profession, pay_from=pay_from, pay_to=pay_to)
 # print(chose_site.keyword)
 # print(chose_site.pay_from)
 # print(chose_site.pay_to)
 print(chose_site.site_search())
+print("")
