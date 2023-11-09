@@ -49,7 +49,7 @@ class SJJson(JsonFile, SuperJob):
             return text['objects']
 
 
-a = HHJson(keyword='Developer', salary_to=1000000, salary_from=10)
+a = HHJson(keyword='ss13rfhncgj', salary_to=1000000, salary_from=10)
 # c = SJJson(keyword='Developer', payment_to=1000000, payment_from=10)
 a.to_json()
 # # c.to_json()
