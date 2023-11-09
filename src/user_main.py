@@ -5,19 +5,19 @@
 #
 #     def __str__(self):
 #         return self.message
+from src.work_with_json import HHJson, SJJson
 
 
 class Welcome:
 
     def __init__(self, keyword, pay_from=0, pay_to=0):
         self.keyword = keyword
-        self.pay_from = int(pay_from)
-        self.pay_to = int(pay_to)
+        self.pay_from = int(pay_from)  # if pay_from is not None else 0
+        self.pay_to = int(pay_to)  # if pay_from is not None else 0
 
-    @property
     def site_search(self):
         try:
-            site_for_search = input('По какому сайту вы хотели бы'
+            site_for_search = input('\nПо какому сайту вы хотели бы'
                                     ' осуществить поиск работы.\n'
                                     '1 -> HeadHunter.ru\n'
                                     '2 -> SuperJob.ru\n'
@@ -28,7 +28,7 @@ class Welcome:
         except (TypeError, ValueError, AssertionError):
             # raise MyError("Не корректный ввод")
             print("Не корректный ввод")
-            self.site_search
+            self.site_search()
 
         else:
             if num == 0:
@@ -36,11 +36,23 @@ class Welcome:
                 exit()
             else:
                 if num == 1:
-                    print("Вы выбрали поиск по HeadHunter.ru")
+                    print("\nВы выбрали поиск по HeadHunter.ru\n")
+                    HHJson(keyword=self.keyword,
+                           salary_from=self.pay_from,
+                           salary_to=self.pay_to).to_json()
                 elif num == 2:
-                    print("Вы выбрали поиск по SuperJob.ru")
+                    print("\nВы выбрали поиск по SuperJob.ru\n")
+                    SJJson(keyword=self.keyword,
+                           payment_from=self.pay_from,
+                           payment_to=self.pay_to).to_json()
                 else:
-                    print("Вы выбрали поиск по всем")
+                    print("\nВы выбрали поиск по всем\n")
+                    HHJson(keyword=self.keyword,
+                           salary_from=self.pay_from,
+                           salary_to=self.pay_to).to_json()
+                    SJJson(keyword=self.keyword,
+                           payment_from=self.pay_from,
+                           payment_to=self.pay_to).to_json()
                 return num
 
 
@@ -48,65 +60,38 @@ class HowPay:
 
     def pay_from_(self):
         try:
-            pay_from = int(input('Укажите минимальный уровень зарплаты\n'))
-            assert pay_from >= 0
+            pay_min = int(input('Укажите минимальный уровень зарплаты\n'))
+            # print(pay_min)
+            # print(type(pay_min))
+            assert pay_min >= 0
         except ValueError:
             print("Не корректный ввод, должно быть целое, не отрицательное число")
-            self.pay_from_()
+            # print(pay_min)
+            # print(type(pay_min))
+            return self.pay_from_()
         except AssertionError:
             print("Значение должно быть не отрицательным")
-            self.pay_from_()
+            # print(pay_min)
+            # print(type(pay_min))
+            return self.pay_from_()
         else:
-            return pay_from
-
+            # print(pay_min)
+            # print(type(pay_min))
+            return pay_min
 
     def pay_to_(self):
         try:
-            pay_to = int(input('Укажите максимальный уровень зарплаты\n'))
-            assert pay_to >= 0
+            pay_max = int(input('Укажите максимальный уровень зарплаты\n'))
+            assert pay_max >= 0
 
         except ValueError:
             print("Не корректный ввод, должно быть целое, не отрицательное число")
-            self.pay_to_()
+            return self.pay_to_()
         except AssertionError:
             print("Значение должно быть не отрицательным")
-            self.pay_to_()
+            return self.pay_to_()
         else:
-            return pay_to
-
-
-# class HowPay:
-#
-#     def __init__(self):
-#         self.__pay_from = 0
-#         self.__pay_to = 0
-#
-#     @property
-#     def pay_from(self):
-#         return self.__pay_from
-#
-#     @pay_from.setter
-#     def pay_from(self, from_):
-#         try:
-#             self.__pay_from = int(from_)
-#         except ValueError:
-#             print("xuy")
-#
-#         # try:
-#
-#     pay_from = int(input('Укажите минимальный уровень зарплаты\n'))
-#
-# except ValueError:
-#     print("Не корректный ввод")
-#     return False
-#
-# try:
-#     pay_to = int(input('Укажите максимальный уровень зарплаты\n'))
-# except ValueError:
-#     print("Не корректный ввод")
-#     return False
-# else:
-#     return [pay_from, pay_to]
+            return pay_max
 
 
 print("Добрый день. Данная программа помогает парсить"
@@ -116,16 +101,19 @@ profession = input("Введите название профессии по ко
 pay = HowPay()
 pay_from = pay.pay_from_()
 pay_to = pay.pay_to_()
-
-
-# chose = False
-chose_site = Welcome(keyword=profession)
-chose = chose_site.site_search
-# while not chose:
-#     # chose_site = Welcome(keyword=profession)
-#     chose = chose_site.site_search
-#
-# answer = False
-# while not answer:
-#     answer_work = Welcome()
-#     answer = answer_work.ask_key_pay()
+while True:
+    if pay_from <= pay_to or pay_from == 0 or pay_to == 0:
+        break
+    else:
+        print("Минимальная оплата должна быть меньше максимальной,"
+              " или одна из них должны быть 0 (не указана).\n"
+              "Попробуйте еще раз\n")
+        pay_from = pay.pay_from_()
+        pay_to = pay.pay_to_()
+# print(type(pay_from))
+# print(pay_from)
+chose_site = Welcome(keyword=profession, pay_from=pay_from, pay_to=pay_to)
+# print(chose_site.keyword)
+# print(chose_site.pay_from)
+# print(chose_site.pay_to)
+print(chose_site.site_search())

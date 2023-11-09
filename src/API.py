@@ -24,7 +24,8 @@ class HeadHunt(AbstractAPI):
             'text': keyword,
             'salary_from': salary_from,
             'salary_to': salary_to,
-            'only_with_salary': True
+            'only_with_salary': True,
+            # 'currency': 'RUR'
         }
 
     def get_vacancies(self):
@@ -42,7 +43,7 @@ class SuperJob(AbstractAPI):
             'keyword': keywords,
             'payment_from': payment_from,
             'payment_to': payment_to,
-            'no_agreement': 1
+            'no_agreement': 1,
             # 'page': page,
         }
 
