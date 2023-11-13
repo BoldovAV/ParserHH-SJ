@@ -50,8 +50,8 @@ class SJJson(JsonFile, SuperJob):
 
 
 # a = HHJson(keyword='ss13rfhncgj', salary_to=1000000, salary_from=10)
-# # c = SJJson(keyword='Developer', payment_to=1000000, payment_from=10)
-# a.to_json()
-# # # c.to_json()
-# # print(c.from_json())
-# print(a.from_json())
+# c = SJJson(keyword='Developer', payment_to=1000000, payment_from=10)
+# # a.to_json()
+# # # # c.to_json()
+# print(len(c.from_json()))
+# # print(a.from_json())

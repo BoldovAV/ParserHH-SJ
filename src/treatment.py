@@ -27,21 +27,19 @@ class BasicRequest(ABC):
 
 
 class BaseOpera:
-    #
-    #     def __init__(self):
-    #         self.name = None  # Название должности
-    #         self.city = None  # Город
-    #         self.work_place = None  # Место работы
-    #         self.pay_from = None  # Оплата от
-    #         self.pay_to = None  # Оплата до
-    #         self.currency = None  # Валюта
-    #         self.url = None  # Ссылка
-    #         self.employer = None  # Ссылка на работодателя
-    #         self.exp = None  # Опыт работы
-    #
+
     def __str__(self):
-        return f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}'
-        # print(f'{self.name}\nJОплата от {self.pay_from} до {self.pay_to} {self.currency}')
+        return (f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}\n'
+                f'г. {self.city}, тип работы (вахта/удаленка и т.д.) {self.work_place}\n'
+                f'Работодатель: {self.employer}\n'
+                f'Требуемый опыт: {self.exp}\n'
+                f'{self.url}')
+
+    def payment(self):
+        pass
+
+    def top_n(self, num: int):
+        pass
 
 
 class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
@@ -52,33 +50,16 @@ class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
         self.name = self.from_json()[call]['name']  # Название должности
         self.city = self.from_json()[call]['area']['name']  # Город
         self.work_place = self.from_json()[call]['schedule']['name']  # Место работы
-        # if self.from_json()[call]['salary']['from'] is None:  # Оплата от
-        #     self.pay_from = "'Не указано'"
-        # else:
-        #     self.pay_from = self.from_json()[call]['salary']['from']
         self.pay_from = self.from_json()[call]['salary']['from'] \
             if isinstance(self.from_json()[call]['salary']['from'], int) \
-            else "'Не указано'"  # is not None
-        # if self.from_json()[call]['salary']['to'] is None:  # Оплата до
-        #     self.pay_to = "'Не указано'"
-        # else:
-        #     self.pay_to = self.from_json()[call]['salary']['to']
+            else "'Не указано'"  # Оплата от
         self.pay_to = self.from_json()[call]['salary']['to'] \
             if isinstance(self.from_json()[call]['salary']['to'], int) \
-            else "'Не указано'"
+            else "'Не указано'"  # Оплата до
         self.currency = self.from_json()[call]['salary']['currency']  # Валюта
         self.url = self.from_json()[call]['alternate_url']  # Ссылка
         self.employer = self.from_json()[call]['employer']['alternate_url']  # Ссылка на работодателя
         self.exp = self.from_json()[call]['experience']['name']  # Опыт работы
-
-    # def __str__(self):
-    #     # print(f'{self.name}\nJОплата от {self.pay_from} до {self.pay_to} {self.currency}')
-    #     # super().__str__()
-    #     print(self.from_json()[1]['salary']['from'])
-    #     print(type(self.from_json()[1]['salary']['from']))
-    #     print(self.from_json()[1]['salary']['to'])
-    #     print(type(self.from_json()[1]['salary']['to']))
-    #     return f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}'
 
     def get_vacancies_from_json(self):
         return self.from_json()
@@ -107,11 +88,6 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
         self.url = self.from_json()[call]['link']  # Ссылка
         self.employer = self.from_json()[call]['client']['link']  # Ссылка на работодателя
         self.exp = self.from_json()[call]['experience']['title']  # Опыт работы
-
-    # def __str__(self):
-    #     # print(f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}')
-    #     # super().__str__()
-    #     return f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}'
 
     def get_vacancies_from_json(self):
         return self.from_json()
@@ -155,3 +131,20 @@ print(b)
 #     print(type(file))
 #     af = file.readline()
 #     print(type(af))
+
+
+# HHJson
+#     Полный день 654
+# 	Удаленная работа 95
+# 	Гибкий график 35
+# 	Сменный график 32
+# 	Вахтовый метод 9
+
+# sj
+# Неполная
+# Полная
+# Неполная дистанционная
+# Сменная
+# Вахтовая
+# Удаленная работа
+# На территории работодателя
