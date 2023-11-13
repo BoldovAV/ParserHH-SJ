@@ -8,22 +8,22 @@ from src.work_with_json import SJJson, HHJson
 
 
 class BasicRequest(ABC):
-
+    """Абстрактный класс для классов по обработке вакансий с разных сайтов"""
     @abstractmethod
     def get_vacancies_from_json(self):
         pass
+    #
+    # @abstractmethod
+    # def key_words(self):
+    #     pass
 
-    @abstractmethod
-    def key_words(self):
-        pass
+    # @abstractmethod
+    # def avg_payment(self):
+    #     pass
 
-    @abstractmethod
-    def avg_payment(self):
-        pass
-
-    @abstractmethod
-    def top_n(self, num: int):
-        pass
+    # @abstractmethod
+    # def top_n(self, num: int):
+    #     pass
 
 
 class BaseOpera:
@@ -35,11 +35,13 @@ class BaseOpera:
                 f'Требуемый опыт: {self.exp}\n'
                 f'{self.url}')
 
-    def payment(self):
-        pass
-
-    def top_n(self, num: int):
-        pass
+    def avg_payment(self):
+        if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
+            return (self.pay_from + self.pay_to) / 2
+        elif isinstance(self.pay_from, int):
+            return self.pay_from
+        else:
+            return self.pay_to
 
 
 class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
@@ -63,20 +65,20 @@ class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
 
     def get_vacancies_from_json(self):
         return self.from_json()
-
-    def key_words(self):
-        pass
-
-    def avg_payment(self):
-        if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
-            return (self.pay_from + self.pay_to)/2
-        elif isinstance(self.pay_from, int):
-            return self.pay_from
-        else:
-            return self.pay_to
-
-    def top_n(self, num: int):
-        pass
+    #
+    # def key_words(self):
+    #     pass
+    #
+    # def avg_payment(self):
+    #     if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
+    #         return (self.pay_from + self.pay_to) / 2
+    #     elif isinstance(self.pay_from, int):
+    #         return self.pay_from
+    #     else:
+    #         return self.pay_to
+    #
+    # def top_n(self, num: int):
+    #     pass
 
 
 class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
@@ -87,7 +89,7 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
         self.name = self.from_json()[call]['profession']  # Название должности
         self.city = self.from_json()[call]['town']['title']  # Город
         self.work_place = self.from_json()[call]['place_of_work']['title']  # Место работы
-        self.pay_from = self.from_json()[call]['payment_from']\
+        self.pay_from = self.from_json()[call]['payment_from'] \
             if isinstance(self.from_json()[call]['payment_from'], int) \
             else "'Не указано'"  # Оплата от
         self.pay_to = self.from_json()[call]['payment_to'] \
@@ -100,21 +102,17 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
 
     def get_vacancies_from_json(self):
         return self.from_json()
+    #
+    # def key_words(self):
+    #     pass
 
-    def key_words(self):
-        pass
-
-    def avg_payment(self):
-        if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
-            return (self.pay_from + self.pay_to)/2
-        elif isinstance(self.pay_from, int):
-            return self.pay_from
-        else:
-            return self.pay_to
-
-    def top_n(self, num: int):
-        pass
-
+    # def avg_payment(self):
+    #     if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
+    #         return (self.pay_from + self.pay_to)/2
+    #     elif isinstance(self.pay_from, int):
+    #         return self.pay_from
+    #     else:
+    #         return self.pay_to
 
 # a = HeadHuntSearch(1)  # keyword='Developer', salary_to=1000000, salary_from=10
 # b = SuperJobSearch(1)

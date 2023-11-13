@@ -1,17 +1,19 @@
 from src.treatment import HeadHuntSearch, SuperJobSearch
-
-# from src.user_main import chose_site
 from src.work_with_json import HHJson, SJJson
 
 
 class Welcome:
+    """Стартовый класс, который спрашивает по каким сайтам искать,
+    и осуществляет поиск по выбранным сайтам, записывая результат в файл json"""
 
     def __init__(self, keyword, pay_from, pay_to):
-        self.keyword = keyword
-        self.pay_from = pay_from  # if pay_from is not None else 0
-        self.pay_to = pay_to  # if pay_from is not None else 0
+        self.keyword = keyword  # Ключевое слово (фраза), по которому осуществляется поиск
+        self.pay_from = pay_from  # Желаемая минимальная оплата
+        self.pay_to = pay_to  # Желаемая максимальная оплата
 
     def site_search(self):
+        """Метод, определяющий по каким сайтам, искать.
+        Содержит проверки на корректность вводимых данных"""
         try:
             site_for_search = input('\nПо какому сайту вы хотели бы'
                                     ' осуществить поиск работы.\n'
@@ -24,7 +26,6 @@ class Welcome:
         except (TypeError, ValueError, AssertionError):
             print("Не корректный ввод")
             self.site_search()
-
         else:
             if num == 0:
                 print('Всего хорошего!')
@@ -37,7 +38,8 @@ class Welcome:
                                  salary_to=self.pay_to)
                     how.to_json()
                     how_get = len(how.from_json())
-                    if how_get == 0:
+                    if how_get == 0:  # В случае, если ни одной вакансии не найдено,
+                        # об этом сообщается, а программа завершается
                         print("Увы, по такому запросу ничего не найдено, попробуйте снова")
                         exit()
                     print(f"Получено {how_get} вакансий")
@@ -66,20 +68,24 @@ class Welcome:
                     how_sj.to_json()
                     how_get_hh = len(how_hh.from_json())
                     how_get_sj = len(how_sj.from_json())
-                    if how_get_hh == 0 and how_get_sj == 0:
+                    if how_get_hh == 0 and how_get_sj == 0:  # Если по одному из сайтов
+                        # не найдено вакансий, дальнейшая работа идет с тем, на котором что-то нашлось
                         print("Увы, по такому запросу ничего не найдено, попробуйте снова")
                         exit()
                     elif how_get_hh != 0 and how_get_sj == 0:
-                        num = 1
+                        num = (1, [how_get_hh])
                     elif how_get_hh == 0 and how_get_sj != 0:
-                        num = 2
+                        num = (2, [how_get_sj])
+                    else:
+                        num = (num, [how_get_hh, how_get_sj])
                     print(f"Получено: \n{how_get_hh} вакансий c HH.ru\n"
                           f"{how_get_sj} вакансий c SJ.ru")
-                    num = (num, [how_get_hh, how_get_sj])
             return num
 
 
 class HowPay:
+    """Класс спрашивающий, какую оплату (мин/макс) пользователь хотел бы.
+    В нем устроенна проверка на корректность вводимых данных (type: int >= 0)"""
 
     def pay_from_(self):
         try:
@@ -110,6 +116,7 @@ class HowPay:
 
 
 class GoFind:
+    """Класс для обработки полученных запросов"""
     all_vak_hh = []
     all_vak_sj = []
 
@@ -117,12 +124,9 @@ class GoFind:
         self.chose_site = chose_site
 
     def all_site(self, list_site):
-
-        # how_vak_hh = 0
-        # how_vak_sj = 0
+        """Метод по работе со всеми сайтами"""
         while True:
             try:
-                # print(__class__.__name__.len_list)
                 how_get_hh = list_site[0]
                 how_get_sj = list_site[1]
 
@@ -131,7 +135,8 @@ class GoFind:
 
                 for i in range(how_get_sj):
                     self.all_vak_sj.append((SuperJobSearch(i)))
-
+                # Упрощенная проверка того, что вводит пользователь (главное чтобы число,
+                # если ввести отрицательное, возьмется по модулю
                 how_vak = abs(int(input("По сколько вакансий с каждого сайта вы хотите посмотреть?\n")))
 
             except ValueError:
@@ -142,7 +147,9 @@ class GoFind:
                     self.all_vak_hh, self.all_vak_sj = self.sort_vak(self.chose_site)
                 else:
                     print("Как хотите\n")
-                if how_vak <= how_get_hh and how_vak <= how_get_sj:
+                if how_vak <= how_get_hh and how_vak <= how_get_sj:  # Проверка на случай,
+                    # если введенное число будет больше числа полученных вакансий. В таком
+                    # случае будут показаны все
                     how_vak_hh = how_vak
                     how_vak_sj = how_vak
                 if how_vak > how_get_hh:
@@ -158,6 +165,7 @@ class GoFind:
             print(f'{self.all_vak_sj[i]}\n')
 
     def hh_ru(self, list_site):
+        """Метод по работе только с HH.ru"""
         while True:
             try:
                 how_get_hh = list_site[0]
@@ -184,6 +192,7 @@ class GoFind:
             print(f'{self.all_vak_hh[i]}\n')
 
     def sj_ru(self, list_site):
+        """Метод по работе только с SJ.ru"""
         while True:
             try:
                 how_get_sj = list_site[0]
@@ -211,6 +220,7 @@ class GoFind:
             print(f'{self.all_vak_sj[i]}\n')
 
     def sort_vak(self, site):
+        """Метод для сортировки полученных вакансий по среднему уровню оплаты"""
         if site == 1:
             all_sort_hh = sorted(self.all_vak_hh, key=lambda x: x.avg_payment(), reverse=True)
             return all_sort_hh
