@@ -18,7 +18,7 @@ class BasicRequest(ABC):
         pass
 
     @abstractmethod
-    def payment(self):
+    def avg_payment(self):
         pass
 
     @abstractmethod
@@ -67,8 +67,13 @@ class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
     def key_words(self):
         pass
 
-    def payment(self):
-        pass
+    def avg_payment(self):
+        if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
+            return (self.pay_from + self.pay_to)/2
+        elif isinstance(self.pay_from, int):
+            return self.pay_from
+        else:
+            return isinstance(self.pay_to, int)
 
     def top_n(self, num: int):
         pass
@@ -95,8 +100,13 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
     def key_words(self):
         pass
 
-    def payment(self):
-        pass
+    def avg_payment(self):
+        if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
+            return (self.pay_from + self.pay_to)/2
+        elif isinstance(self.pay_from, int):
+            return self.pay_from
+        else:
+            return isinstance(self.pay_to, int)
 
     def top_n(self, num: int):
         pass

@@ -38,6 +38,7 @@ class Welcome:
                         print("Увы, по такому запросу ничего не найдено, попробуйте снова")
                         exit()
                     print(f"Получено {how_get} вакансий")
+                    num = (num, [how_get])
                 elif num == 2:
                     print(f"\nВы выбрали поиск по SuperJob.ru\n")
                     how = SJJson(keyword=self.keyword,
@@ -48,6 +49,7 @@ class Welcome:
                     if how_get == 0:
                         print("Увы, по такому запросу ничего не найдено, попробуйте снова")
                         exit()
+                    num = (num, [how_get])
                     print(f"Получено {how_get} вакансий")
                 else:
                     print("\nВы выбрали поиск по всем\n")
@@ -70,6 +72,7 @@ class Welcome:
                         num = 2
                     print(f"Получено: \n{how_get_hh} вакансий c HH.ru и\n"
                           f"{how_get_sj} вакансий c SJ.ru")
+                    num = (num, [how_get_hh, how_get_sj])
             return num
 
 
