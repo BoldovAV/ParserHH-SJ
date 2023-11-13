@@ -30,7 +30,7 @@ class BaseOpera:
 
     def __str__(self):
         return (f'{self.name}\nОплата от {self.pay_from} до {self.pay_to} {self.currency}\n'
-                f'г. {self.city}, тип работы (вахта/удаленка и т.д.) {self.work_place}\n'
+                f'г. {self.city}, тип работы (вахта/удаленка и т.д.): {self.work_place}\n'
                 f'Работодатель: {self.employer}\n'
                 f'Требуемый опыт: {self.exp}\n'
                 f'{self.url}')
@@ -73,7 +73,7 @@ class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
         elif isinstance(self.pay_from, int):
             return self.pay_from
         else:
-            return isinstance(self.pay_to, int)
+            return self.pay_to
 
     def top_n(self, num: int):
         pass
@@ -87,8 +87,12 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
         self.name = self.from_json()[call]['profession']  # Название должности
         self.city = self.from_json()[call]['town']['title']  # Город
         self.work_place = self.from_json()[call]['place_of_work']['title']  # Место работы
-        self.pay_from = self.from_json()[call]['payment_from']  # Оплата от
-        self.pay_to = self.from_json()[call]['payment_to']  # Оплата до
+        self.pay_from = self.from_json()[call]['payment_from']\
+            if isinstance(self.from_json()[call]['payment_from'], int) \
+            else "'Не указано'"  # Оплата от
+        self.pay_to = self.from_json()[call]['payment_to'] \
+            if isinstance(self.from_json()[call]['payment_to'], int) \
+            else "'Не указано'"  # Оплата до
         self.currency = self.from_json()[call]['currency']  # Валюта
         self.url = self.from_json()[call]['link']  # Ссылка
         self.employer = self.from_json()[call]['client']['link']  # Ссылка на работодателя
@@ -106,17 +110,17 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
         elif isinstance(self.pay_from, int):
             return self.pay_from
         else:
-            return isinstance(self.pay_to, int)
+            return self.pay_to
 
     def top_n(self, num: int):
         pass
 
 
-a = HeadHuntSearch(1)  # keyword='Developer', salary_to=1000000, salary_from=10
-b = SuperJobSearch(1)
-# print(a.from_json()[1]['salary']['from'])
-print(a)
-print(b)
+# a = HeadHuntSearch(1)  # keyword='Developer', salary_to=1000000, salary_from=10
+# b = SuperJobSearch(1)
+# # print(a.from_json()[1]['salary']['from'])
+# print(a)
+# print(b)
 # # c = SuperJobSearch(keyword='Developer', payment_to=1000000, payment_from=10)
 # b = a.get_vacancies()
 # b1 = c.get_vacancies()
