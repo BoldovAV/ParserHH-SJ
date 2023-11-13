@@ -140,6 +140,8 @@ class GoFind:
                 sort = input("Отсортировать по среднему уровню зарплаты? (Да/Нет)\n").lower()
                 if sort in ['да', 'yes']:
                     self.all_vak_hh, self.all_vak_sj = self.sort_vak(self.chose_site)
+                else:
+                    print("Как хотите\n")
                 if how_vak <= how_get_hh and how_vak <= how_get_sj:
                     how_vak_hh = how_vak
                     how_vak_sj = how_vak
@@ -170,11 +172,14 @@ class GoFind:
                 sort = input("Отсортировать по среднему уровню зарплаты? (Да/Нет)\n").lower()
                 if sort in ['да', 'yes']:
                     self.all_vak_hh = self.sort_vak(self.chose_site)
+                else:
+                    print("Как хотите\n")
                 if how_vak > how_get_hh:
                     how_vak_hh = how_get_hh
                 else:
                     how_vak_hh = how_vak
                 break
+        print("HH.ru:\n")
         for i in range(how_vak_hh):
             print(f'{self.all_vak_hh[i]}\n')
 
@@ -194,11 +199,14 @@ class GoFind:
                 sort = input("Отсортировать по среднему уровню зарплаты? (Да/Нет)\n").lower()
                 if sort in ['да', 'yes']:
                     self.all_vak_sj = self.sort_vak(self.chose_site)
+                else:
+                    print("Как хотите\n")
                 if how_vak > how_get_sj:
                     how_vak_sj = how_get_sj
                 else:
                     how_vak_sj = how_vak
                 break
+        print("SJ.ru:\n")
         for i in range(how_vak_sj):
             print(f'{self.all_vak_sj[i]}\n')
 
