@@ -34,7 +34,7 @@ class BaseOpera:
 
     def avg_payment(self):
         if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
-            return (self.pay_from + self.pay_to) / 2
+            return int((self.pay_from + self.pay_to) / 2)
         elif isinstance(self.pay_from, int):
             return self.pay_from
         else:
