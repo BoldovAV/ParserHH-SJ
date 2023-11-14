@@ -1,14 +1,11 @@
-# import json
 from abc import ABC, abstractmethod
 
 from src.work_with_json import SJJson, HHJson
 
 
-# from src.API import HeadHunt, SuperJob
-
-
 class BasicRequest(ABC):
     """Абстрактный класс для классов по обработке вакансий с разных сайтов"""
+
     @abstractmethod
     def get_vacancies_from_json(self):
         pass
