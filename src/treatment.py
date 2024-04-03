@@ -9,18 +9,6 @@ class BasicRequest(ABC):
     @abstractmethod
     def get_vacancies_from_json(self):
         pass
-    #
-    # @abstractmethod
-    # def key_words(self):
-    #     pass
-
-    # @abstractmethod
-    # def avg_payment(self):
-    #     pass
-
-    # @abstractmethod
-    # def top_n(self, num: int):
-    #     pass
 
 
 class BaseOpera:
@@ -62,20 +50,6 @@ class HeadHuntSearch(BasicRequest, BaseOpera, HHJson):
 
     def get_vacancies_from_json(self):
         return self.from_json()
-    #
-    # def key_words(self):
-    #     pass
-    #
-    # def avg_payment(self):
-    #     if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
-    #         return (self.pay_from + self.pay_to) / 2
-    #     elif isinstance(self.pay_from, int):
-    #         return self.pay_from
-    #     else:
-    #         return self.pay_to
-    #
-    # def top_n(self, num: int):
-    #     pass
 
 
 class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
@@ -99,61 +73,3 @@ class SuperJobSearch(BasicRequest, BaseOpera, SJJson):
 
     def get_vacancies_from_json(self):
         return self.from_json()
-    #
-    # def key_words(self):
-    #     pass
-
-    # def avg_payment(self):
-    #     if isinstance(self.pay_from, int) and isinstance(self.pay_to, int):
-    #         return (self.pay_from + self.pay_to)/2
-    #     elif isinstance(self.pay_from, int):
-    #         return self.pay_from
-    #     else:
-    #         return self.pay_to
-
-# a = HeadHuntSearch(1)  # keyword='Developer', salary_to=1000000, salary_from=10
-# b = SuperJobSearch(1)
-# # print(a.from_json()[1]['salary']['from'])
-# print(a)
-# print(b)
-# # c = SuperJobSearch(keyword='Developer', payment_to=1000000, payment_from=10)
-# b = a.get_vacancies()
-# b1 = c.get_vacancies()
-# c.to_json("SJ.json")
-# a.to_json("HH.json")
-# a.print_info()
-# print(type(b))
-# print(type(b))
-# print(type(b1))
-# print(json.loads(b.text))
-# print(b.text)
-# asd = json.dumps(b.content)
-# # print(asd)
-#
-# print(a.from_json())
-# print(a.name)
-
-# print(b.headers)
-# print(b.reason)
-
-# with open('HH.json', 'r') as file:
-#     print(type(file))
-#     af = file.readline()
-#     print(type(af))
-
-
-# HHJson
-#     Полный день 654
-# 	Удаленная работа 95
-# 	Гибкий график 35
-# 	Сменный график 32
-# 	Вахтовый метод 9
-
-# sj
-# Неполная
-# Полная
-# Неполная дистанционная
-# Сменная
-# Вахтовая
-# Удаленная работа
-# На территории работодателя
